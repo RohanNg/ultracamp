@@ -28,6 +28,7 @@ export interface CampaignData {
   start: string;
   end: string;
   imgURL: string;
+  brand: string;
 }
 
 const PRODUCT_COLLECTION = db.collection("product");
@@ -53,6 +54,11 @@ export async function getDiscountedProducts(): Promise<ProductItemData[]> {
 export async function getProducts(): Promise<ProductItemData[]> {
   const doc = await PRODUCT_COLLECTION.get();
   return doc.docs.map(doc => doc.data()) as ProductItemData[];
+}
+
+export async function getCampaigns(): Promise<CampaignData[]> {
+  const doc = await CAMPAIGN_COLLECTION.get();
+  return doc.docs.map(doc => doc.data()) as CampaignData[];
 }
 
 export async function saveCampaign(data: CampaignData): Promise<void> {

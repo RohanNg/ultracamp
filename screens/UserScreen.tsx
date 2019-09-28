@@ -1,16 +1,7 @@
-import * as WebBrowser from "expo-web-browser";
 import React from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { ProductComponent } from "../components/Product";
-import { ProductItemData, getDiscountedProducts } from "../repositories";
+import { getDiscountedProducts, ProductItemData } from "../repositories";
 import { Product } from "../types/product";
 
 interface UserScreenProps {}

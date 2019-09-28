@@ -17,6 +17,7 @@ interface State {
     coverImage?: string,
     destinationURL: string,
     campaignName: string,
+    brand: string,
     dialogVisible: boolean
 }
 
@@ -26,7 +27,8 @@ export class CampaignForm extends React.Component<any, State> {
         datePicker: 'start',
         destinationURL: '',
         campaignName: '',
-        dialogVisible: false
+        dialogVisible: false,
+        brand: ''
     }
     render(): React.ReactNode {
         const { startDate, endDate, coverImage, campaignName, destinationURL } = this.state;
@@ -42,6 +44,14 @@ export class CampaignForm extends React.Component<any, State> {
                             : require('../assets/images/upload_activity_image.png')}
                     />
                 </TouchableOpacity>
+                <TextInput
+                    keyboardType='default'
+                    label='Brand'
+                    mode='outlined'
+                    value={campaignName}
+                    onChangeText={brand => this.setState({ brand })}
+                    style={styles.section}
+                />
                 <TextInput
                     keyboardType='default'
                     label='Campaign name'
@@ -116,7 +126,7 @@ export class CampaignForm extends React.Component<any, State> {
 
     createCampaign = async () => {
         this.showDialog()
-        const { endDate, startDate, campaignName, coverImage, destinationURL } = this.state;
+        const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
         const uploadedImgURL = await uploadImage(coverImage)
 
         await saveCampaign({
@@ -125,13 +135,14 @@ export class CampaignForm extends React.Component<any, State> {
             end: endDate.toISOString(),
             start: startDate.toISOString(), 
             imgURL: uploadedImgURL,
-            title: campaignName
+            title: campaignName,
+            brand
         })
     }
 
     isFormValid = (): boolean => {
-        const { endDate, startDate, campaignName, coverImage, destinationURL } = this.state;
-        return typeof endDate === 'object' && typeof startDate === 'object' && campaignName && coverImage && !!destinationURL
+        const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
+        return typeof endDate === 'object' && typeof startDate === 'object' && campaignName && coverImage && brand && !!destinationURL 
     }
     
     showDateTimePicker = (datePicker: 'start' | 'end') => {
