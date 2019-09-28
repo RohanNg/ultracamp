@@ -6,8 +6,13 @@ import { ProductItemData, getDiscountedProducts } from "../repositories";
 import { Product } from "../types/product";
 import { Button } from "react-native-elements";
 import { ProductMerchantComponent } from "../components/ProductMerchant";
+import { Button as PaperButton } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Item } from "react-native-paper/typings/components/Drawer";
 
-interface HomeScreenProps {}
+interface HomeScreenProps {
+  navigation: any;
+}
 
 interface HomeScreenState {
   products: { product: Product; selected: boolean }[];
@@ -23,6 +28,7 @@ export default class HomeScreen extends React.Component<
     };
     this.genererateProductsView = this.genererateProductsView.bind(this);
     this.selectProduct = this.selectProduct.bind(this);
+    this.submitProducts = this.submitProducts.bind(this);
   }
 
   async componentDidMount() {
@@ -48,6 +54,15 @@ export default class HomeScreen extends React.Component<
     products[index].selected = !products[index].selected;
     this.setState({ products: products });
   }
+
+  submitProducts() {
+    const selectedProducts = this.state.products
+      .filter((item: any) => item.selected)
+      .map((item: any) => item.product);
+    this.props.navigation.navigate("Links", {
+      products: JSON.stringify(selectedProducts)
+    });
+  }
   genererateProductsView() {
     const products = this.state.products;
 
@@ -60,6 +75,7 @@ export default class HomeScreen extends React.Component<
               selectProduct={() => this.selectProduct(i)}
               product={products[i].product}
               selected={products[i].selected}
+              showButton={true}
             />
           </View>
           {products[i + 1] ? (
@@ -68,6 +84,7 @@ export default class HomeScreen extends React.Component<
                 selectProduct={() => this.selectProduct(i + 1)}
                 product={products[i + 1].product}
                 selected={products[i + 1].selected}
+                showButton={true}
               />
             </View>
           ) : (
@@ -77,6 +94,12 @@ export default class HomeScreen extends React.Component<
       );
     }
     return productViews;
+  }
+
+  getIcon(name: string) {
+    return ({ color, size }: { color: string; size: number }) => {
+      return <MaterialCommunityIcons size={size} color={color} name={name} />;
+    };
   }
 
   public render() {
@@ -89,6 +112,19 @@ export default class HomeScreen extends React.Component<
         >
           {productComponents}
         </ScrollView>
+
+        <PaperButton
+          icon={this.getIcon("rocket")}
+          mode="contained"
+          style={styles.lastSection}
+          color={"#F27979"}
+          onPress={this.submitProducts}
+          disabled={
+            this.state.products.filter((item: any) => item.selected).length <= 0
+          }
+        >
+          Launch
+        </PaperButton>
       </View>
     );
   }
@@ -99,6 +135,9 @@ HomeScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+  lastSection: {
+    marginTop: 32
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff"

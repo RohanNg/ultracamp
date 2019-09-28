@@ -6,10 +6,11 @@ import { Product } from "../types/product";
 interface ProductMerchantProps {
   product: Product;
   selected: false;
+  showButton: false;
   selectProduct: () => void;
 }
 export function ProductMerchantComponent(props: ProductMerchantProps) {
-  const { product, selected, selectProduct } = props;
+  const { product, selected, selectProduct, showButton } = props;
 
   return (
     <Card
@@ -31,30 +32,27 @@ export function ProductMerchantComponent(props: ProductMerchantProps) {
         </Text>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={[styles.price, styles.silver]}>RRP</Text>
-          <Text style={[styles.price, styles.lineThrough, styles.silver]}>
-            {product.price} $
-          </Text>
-          <Text style={[styles.price, styles.discount]}>
-            {(product.price * (100 - product.discountRate)) / 100} $
-          </Text>
+          <Text style={[styles.price, styles.silver]}>{product.price} $</Text>
         </View>
       </View>
 
-      <Button
-        buttonStyle={[
-          {
-            borderRadius: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            marginBottom: 0,
-            backgroundColor: "#F27979",
-            opacity: selected ? 1 : 0.7
-          }
-        ]}
-        onPress={selectProduct}
-        titleStyle={{ fontSize: 12 }}
-        title={selected ? "Selected" : "Select"}
-      />
+      {showButton && (
+        <Button
+          buttonStyle={[
+            {
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              backgroundColor: "#F27979",
+              opacity: selected ? 1 : 0.7
+            }
+          ]}
+          onPress={selectProduct}
+          titleStyle={{ fontSize: 12 }}
+          title={selected ? "Selected" : "Select"}
+        />
+      )}
     </Card>
   );
 }
