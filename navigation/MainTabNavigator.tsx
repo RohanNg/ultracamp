@@ -1,10 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import { LaunchCampaign } from '../screens/LaunchCampaign';
+import { LaunchDiscountProducts } from '../screens/LaunchDiscountProducts';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const config = Platform.select({
@@ -37,19 +37,31 @@ HomeStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Links: LaunchDiscountProducts,
   },
   config
 );
-
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'MDiscount',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
 };
+LinksStack.path = '/merchant-launch-discount';
 
-LinksStack.path = '';
+const LaunchCampStack = createStackNavigator(
+  {
+    Links: LaunchCampaign,
+  },
+  config
+);
+LaunchCampStack.navigationOptions = {
+  tabBarLabel: 'MCampaign',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+  ),
+};
+LaunchCampStack.path = '/merchant-launch-campaign';
 
 const SettingsStack = createStackNavigator(
   {
@@ -70,6 +82,7 @@ SettingsStack.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  LaunchCampStack,
   SettingsStack,
 });
 

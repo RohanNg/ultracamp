@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { DiscountSettingForm } from '../components/DiscountForm';
 
-export default function LinksScreen() {
+export function LaunchDiscountProducts() {
   return (
     <ScrollView style={styles.container}>
       {/**
@@ -14,7 +14,7 @@ export default function LinksScreen() {
   );
 }
 
-LinksScreen.navigationOptions = {
+LaunchDiscountProducts.navigationOptions = {
   title: 'Launch product discount',
 };
 
