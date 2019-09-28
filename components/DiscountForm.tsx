@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DateTime } from "luxon";
 import * as React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, TextInput } from "react-native-paper";
 import { Product } from "../types/product";
@@ -68,13 +68,15 @@ export class DiscountSettingForm extends React.Component<any, State> {
         {discountedProducts.length > 0 && (
           <ScrollView horizontal={true}>
             {discountedProducts.map((product: Product, index: number) => (
-              <ProductMerchantComponent
-                key={index}
-                selectProduct={() => {}}
-                product={product}
-                selected={false}
-                showButton={false}
-              />
+              <View style={{ width: 200 }}>
+                <ProductMerchantComponent
+                  key={index}
+                  selectProduct={() => {}}
+                  product={product}
+                  selected={false}
+                  showButton={false}
+                />
+              </View>
             ))}
           </ScrollView>
         )}
