@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { DiscountSettingForm } from '../components/DiscountForm';
+import { CampaignForm } from '../components/CampaignForm';
 
 export function LaunchCampaign() {
   return (
@@ -9,13 +9,13 @@ export function LaunchCampaign() {
        * Go ahead and delete ExpoLinksView and replace it with your content;
        * we just wanted to provide you with some helpful links.
        */}
-      <DiscountSettingForm />
+      <CampaignForm />
     </ScrollView>
   );
 }
 
 LaunchCampaign.navigationOptions = {
-  title: 'Launch product discount',
+  title: 'Launch promotion campaign',
 };
 
 const styles = StyleSheet.create({
