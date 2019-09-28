@@ -5,6 +5,9 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
+import { getItemById } from './repositories';
+
+getItemById('1').then(i => console.info('item retrieve ', i))
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
