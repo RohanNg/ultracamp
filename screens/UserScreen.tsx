@@ -30,6 +30,7 @@ export default class UserScreen extends React.Component<
     const products: Product[] = this.state.products.map(
       (productItemData: ProductItemData) => {
         return {
+          id: productItemData.id,
           name: productItemData.name,
           imgURL: productItemData.imgURL,
           discountRate: productItemData.discount.discountRate,

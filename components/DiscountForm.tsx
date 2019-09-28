@@ -7,6 +7,7 @@ import { Button, Text, TextInput } from "react-native-paper";
 import { Product } from "../types/product";
 import { ProductComponent } from "./Product";
 import { ProductMerchantComponent } from "./ProductMerchant";
+import { updateProducts } from "../repositories";
 
 interface State {
   startDate?: Date;
@@ -22,6 +23,7 @@ export class DiscountSettingForm extends React.Component<any, State> {
     isDateTimePickerVisible: false,
     datePicker: "start"
   };
+
   render(): React.ReactNode {
     const { startDate, discountRate, endDate } = this.state;
     const discountedProducts = this.props.discountedProducts || [];
@@ -68,9 +70,8 @@ export class DiscountSettingForm extends React.Component<any, State> {
         {discountedProducts.length > 0 && (
           <ScrollView horizontal={true}>
             {discountedProducts.map((product: Product, index: number) => (
-              <View style={{ width: 200 }}>
+              <View key={index} style={{ width: 200 }}>
                 <ProductMerchantComponent
-                  key={index}
                   selectProduct={() => {}}
                   product={product}
                   selected={false}
@@ -85,12 +86,22 @@ export class DiscountSettingForm extends React.Component<any, State> {
           mode="contained"
           style={styles.lastSection}
           color={"#F27979"}
+          onPress={this.submit}
         >
           Launch
         </Button>
       </>
     );
   }
+
+  submit = async () => {
+    const products = this.props.discountedProducts || [];
+    await updateProducts(products, {
+      start: this.state.startDate,
+      end: this.state.endDate,
+      discountRate: Number(this.state.discountRate)
+    });
+  };
 
   showDateTimePicker = (datePicker: "start" | "end") => {
     this.setState({

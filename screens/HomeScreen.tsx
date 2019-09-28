@@ -2,7 +2,11 @@ import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { Image, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { ProductComponent } from "../components/Product";
-import { ProductItemData, getDiscountedProducts } from "../repositories";
+import {
+  ProductItemData,
+  getDiscountedProducts,
+  getProducts
+} from "../repositories";
 import { Product } from "../types/product";
 import { Button } from "react-native-elements";
 import { ProductMerchantComponent } from "../components/ProductMerchant";
@@ -32,14 +36,16 @@ export default class HomeScreen extends React.Component<
   }
 
   async componentDidMount() {
-    const products = await getDiscountedProducts();
+    const products = await getProducts();
+    console.log(products);
+
     this.setState({
       products: products.map((productItemData: ProductItemData) => {
         return {
           product: {
+            id: productItemData.id,
             name: productItemData.name,
             imgURL: productItemData.imgURL,
-            discountRate: productItemData.discount.discountRate,
             price: productItemData.price,
             brand: productItemData.brand
           },

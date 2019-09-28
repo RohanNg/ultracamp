@@ -1,4 +1,11 @@
 import { db } from "../services";
+import { Product } from "../types/product";
+
+export interface Discount {
+  start: Date;
+  end: Date;
+  discountRate: number;
+}
 
 export interface ProductItemData {
   id: string;
@@ -15,13 +22,13 @@ export interface ProductItemData {
 }
 
 export interface CampaignData {
-  id: string,
-  campaignURL: string,
-  title: string,
-  start: string,
-  end: string,
-  imgURL: string,
-  brand: string
+  id: string;
+  campaignURL: string;
+  title: string;
+  start: string;
+  end: string;
+  imgURL: string;
+  brand: string;
 }
 
 const PRODUCT_COLLECTION = db.collection("product");
@@ -39,6 +46,13 @@ export async function getItemById(id: string): Promise<ProductItemData> {
 
 export async function getDiscountedProducts(): Promise<ProductItemData[]> {
   const doc = await PRODUCT_COLLECTION.get();
+  return doc.docs
+    .map(doc => doc.data())
+    .filter((item: any) => item.discount) as ProductItemData[];
+}
+
+export async function getProducts(): Promise<ProductItemData[]> {
+  const doc = await PRODUCT_COLLECTION.get();
   return doc.docs.map(doc => doc.data()) as ProductItemData[];
 }
 
@@ -49,4 +63,18 @@ export async function getCampaigns(): Promise<CampaignData[]> {
 
 export async function saveCampaign(data: CampaignData): Promise<void> {
   return await CAMPAIGN_COLLECTION.doc(data.id).set(data);
+}
+
+export async function updateProducts(
+  products: Product[],
+  discount: Discount
+): Promise<any> {
+  let batch = db.batch();
+  products.forEach((productItem: Product) => {
+    batch.update(PRODUCT_COLLECTION.doc(productItem.id), {
+      discount: discount
+    });
+  });
+
+  return await batch.commit();
 }
