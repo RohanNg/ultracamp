@@ -3,11 +3,13 @@ import { Text, StyleSheet, View } from "react-native";
 import { Card, Button, Badge, Image } from "react-native-elements";
 import { Product } from "../types/product";
 
-interface ProductProps {
+interface ProductMerchantProps {
   product: Product;
+  selected: false;
+  selectProduct: () => void;
 }
-export function ProductComponent(props: ProductProps) {
-  const { product } = props;
+export function ProductMerchantComponent(props: ProductMerchantProps) {
+  const { product, selected, selectProduct } = props;
 
   return (
     <Card
@@ -37,6 +39,22 @@ export function ProductComponent(props: ProductProps) {
           </Text>
         </View>
       </View>
+
+      <Button
+        buttonStyle={[
+          {
+            borderRadius: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            backgroundColor: "#F27979",
+            opacity: selected ? 1 : 0.7
+          }
+        ]}
+        onPress={selectProduct}
+        titleStyle={{ fontSize: 12 }}
+        title={selected ? "Selected" : "Select"}
+      />
     </Card>
   );
 }
