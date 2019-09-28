@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import { LaunchCampaign } from '../screens/LaunchCampaign';
 import { LaunchDiscountProducts } from '../screens/LaunchDiscountProducts';
+import { ListCampaignScreen } from '../screens/ListCampaign';
 import SettingsScreen from '../screens/SettingsScreen';
 import UserScreen from "../screens/UserScreen";
 
@@ -87,6 +88,20 @@ LaunchCampStack.navigationOptions = {
 };
 LaunchCampStack.path = '/merchant-launch-campaign';
 
+const ListCampStack = createStackNavigator(
+  {
+    Links: ListCampaignScreen,
+  },
+  config
+);
+ListCampStack.navigationOptions = {
+  tabBarLabel: 'UCampaigns',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+  ),
+};
+ListCampStack.path = '/merchant-launch-campaign';
+
 const SettingsStack = createStackNavigator(
   {
     Settings: SettingsScreen
@@ -111,7 +126,8 @@ const tabNavigator = createBottomTabNavigator({
   LinksStack,
   LaunchCampStack,
   SettingsStack,
-  UserStack
+  UserStack,
+  ListCampStack
 });
 
 tabNavigator.path = "";
