@@ -15,7 +15,8 @@ export function ProductComponent(props: ProductProps) {
         padding: 0,
         margin: 10,
         elevation: 0,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        borderRadius: 10
       }}
     >
       <Image
@@ -23,7 +24,9 @@ export function ProductComponent(props: ProductProps) {
         style={{ width: "100%", height: 150 }}
       />
       <View style={{ paddingLeft: 10 }}>
-        <Text style={styles.name}>{product.name}</Text>
+        <Text style={styles.name}>
+          {product.name}@{product.brand}
+        </Text>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={[styles.price, styles.silver]}>RRP</Text>
           <Text style={[styles.price, styles.lineThrough, styles.silver]}>

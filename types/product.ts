@@ -6,4 +6,5 @@ export interface Product {
   expiredDate?: firebase.firestore.Timestamp;
   discountRate: number;
   price: number;
+  brand: string;
 }
