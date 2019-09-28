@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import { ProductItemData, saveItem } from './';
 
 const items: Array<ProductItemData> = [{
@@ -15,8 +15,11 @@ const items: Array<ProductItemData> = [{
     description: 'big banana for everyone'
 }];
 
-(async function saveAll() {
+async function saveAll() {
     for ( const i of items ) {
         await saveItem(i)
+        console.info("item ", i.id, "saved")
     }
-})()
+}
+
+saveAll().then(() => {})
