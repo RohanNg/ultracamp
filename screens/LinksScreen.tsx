@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import { DiscountSettingForm } from '../components/DiscountForm';
 
 export default function LinksScreen() {
   return (
@@ -9,13 +9,13 @@ export default function LinksScreen() {
        * Go ahead and delete ExpoLinksView and replace it with your content;
        * we just wanted to provide you with some helpful links.
        */}
-      <ExpoLinksView />
+      <DiscountSettingForm />
     </ScrollView>
   );
 }
 
 LinksScreen.navigationOptions = {
-  title: 'Links',
+  title: 'Launch product discount',
 };
 
 const styles = StyleSheet.create({
@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
     backgroundColor: '#fff',
+    paddingHorizontal: 15
   },
 });
