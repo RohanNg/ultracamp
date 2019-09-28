@@ -14,7 +14,17 @@ export interface ProductItemData {
   description: string;
 }
 
+export interface CampaignData {
+  id: string,
+  campaignURL: string,
+  title: string,
+  start: string,
+  end: string,
+  imgURL: string
+}
+
 const PRODUCT_COLLECTION = db.collection("product");
+const CAMPAIGN_COLLECTION = db.collection("campaigns");
 
 export async function saveItem(data: ProductItemData): Promise<void> {
   return await PRODUCT_COLLECTION.doc(data.id).set(data);
@@ -29,4 +39,8 @@ export async function getItemById(id: string): Promise<ProductItemData> {
 export async function getDiscountedProducts(): Promise<ProductItemData[]> {
   const doc = await PRODUCT_COLLECTION.get();
   return doc.docs.map(doc => doc.data()) as ProductItemData[];
+}
+
+export async function saveCampaign(data: CampaignData): Promise<void> {
+  return await CAMPAIGN_COLLECTION.doc(data.id).set(data);
 }

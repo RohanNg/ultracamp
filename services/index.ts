@@ -1,6 +1,6 @@
 import '@firebase/firestore';
 import * as firebase from 'firebase';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -8,7 +8,7 @@ const firebaseConfig = {
   authDomain: "ultracamp-23946.firebaseapp.com",
   databaseURL: "https://ultracamp-23946.firebaseio.com",
   projectId: "ultracamp-23946",
-  storageBucket: "ultracamp.appspot.com",
+  storageBucket: "ultracamp-23946.appspot.com",
   messagingSenderId: "1003405875505",
   appId: "1:1003405875505:web:3386ca8a66f99a46407810"
 };
@@ -17,9 +17,7 @@ const app = firebase.initializeApp(firebaseConfig);
 
 const db: firebase.firestore.Firestore = app.firestore()
 
-// Upload image to firebase given image URI
-// Return Promise<image url>
-async function uploadImage(uri) {
+async function uploadImage(uri: string): Promise<string> {
     const response = await fetch(uri)
     const blob = await response.blob()
     const ref = firebase
@@ -34,3 +32,4 @@ async function uploadImage(uri) {
   
 
 export { app, db, uploadImage };
+

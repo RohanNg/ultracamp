@@ -3,7 +3,10 @@ import { DateTime } from 'luxon';
 import * as React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Dialog, Paragraph, Portal, Text, TextInput } from 'react-native-paper';
+import * as uuid from 'uuid';
+import { saveCampaign } from '../repositories';
+import { uploadImage } from '../services';
 import { pickImage } from '../utils';
 
 interface State {
@@ -14,6 +17,7 @@ interface State {
     coverImage?: string,
     destinationURL: string,
     campaignName: string,
+    dialogVisible: boolean
 }
 
 export class CampaignForm extends React.Component<any, State> {
@@ -21,7 +25,8 @@ export class CampaignForm extends React.Component<any, State> {
         isDateTimePickerVisible: false,
         datePicker: 'start',
         destinationURL: '',
-        campaignName: ''
+        campaignName: '',
+        dialogVisible: false
     }
     render(): React.ReactNode {
         const { startDate, endDate, coverImage, campaignName, destinationURL } = this.state;
@@ -77,17 +82,56 @@ export class CampaignForm extends React.Component<any, State> {
                     minuteInterval={10}
                     minimumDate={new Date()}
                 />
-
                 <Button 
                     icon={getIcon('rocket')} 
                     mode='contained'
                     style={styles.lastSection}
                     color={'#F27979'}
+                    disabled={!this.isFormValid()}
+                    onPress={this.createCampaign}
                 >
                     Launch
                 </Button>
+                <Portal>
+                    <Dialog
+                        visible={this.state.dialogVisible}
+                        onDismiss={this.hideDialog}>
+                        <Dialog.Title>Congrats!</Dialog.Title>
+                        <Dialog.Content>
+                            <Paragraph>Campaign was successfully created</Paragraph>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                        <Button onPress={this.hideDialog}>Done</Button>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>
+
             </>
         )
+    }
+
+    showDialog = () => this.setState({ dialogVisible: true });
+
+    hideDialog = () => this.setState({ dialogVisible: false });
+
+    createCampaign = async () => {
+        this.showDialog()
+        const { endDate, startDate, campaignName, coverImage, destinationURL } = this.state;
+        const uploadedImgURL = await uploadImage(coverImage)
+
+        await saveCampaign({
+            id: uuid.v4(),
+            campaignURL: destinationURL,
+            end: endDate.toISOString(),
+            start: startDate.toISOString(), 
+            imgURL: uploadedImgURL,
+            title: campaignName
+        })
+    }
+
+    isFormValid = (): boolean => {
+        const { endDate, startDate, campaignName, coverImage, destinationURL } = this.state;
+        return typeof endDate === 'object' && typeof startDate === 'object' && campaignName && coverImage && !!destinationURL
     }
     
     showDateTimePicker = (datePicker: 'start' | 'end') => {
@@ -149,5 +193,7 @@ const styles = StyleSheet.create({
         width: undefined,
         height: 220,
         resizeMode: 'cover',
+        borderRadius: 4,
+        borderWidth: 0
       },
 });
