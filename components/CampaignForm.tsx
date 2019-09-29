@@ -22,6 +22,7 @@ interface State {
 }
 
 export class CampaignForm extends React.Component<any, State> {
+    
     state: State = {
         isDateTimePickerVisible: false,
         datePicker: 'start',
@@ -31,18 +32,19 @@ export class CampaignForm extends React.Component<any, State> {
         brand: ''
     }
     render(): React.ReactNode {
+        const productCampaigns = this.props.campaignProducts || [];
         const { startDate, endDate, coverImage, campaignName, destinationURL } = this.state;
         return (
             <>
                 <TouchableOpacity onPress={this.pickActivityImage}>
-                    <Image
-                        style={[
-                            styles.backgroundImage
-                        ]}
-                        source={coverImage
-                            ? { uri: coverImage }
-                            : require('../assets/images/upload_activity_image.png')}
-                    />
+                <Image
+                style={[
+                    styles.backgroundImage
+                ]}
+                source={coverImage
+                    ? { uri: coverImage }
+                    : require('../assets/images/upload_activity_image.png')}
+            />
                 </TouchableOpacity>
                 <TextInput
                     keyboardType='default'
@@ -97,7 +99,7 @@ export class CampaignForm extends React.Component<any, State> {
                     mode='contained'
                     style={styles.lastSection}
                     color={'#F27979'}
-                    disabled={!this.isFormValid()}
+                    
                     onPress={this.createCampaign}
                 >
                     Launch
@@ -125,24 +127,29 @@ export class CampaignForm extends React.Component<any, State> {
     hideDialog = () => this.setState({ dialogVisible: false });
 
     createCampaign = async () => {
-        this.showDialog()
-        const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
-        const uploadedImgURL = await uploadImage(coverImage)
 
+        const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
+        // const uploadedImgURL = await uploadImage(coverImage)
+        const productCampaigns = this.props.campaignProducts || [];
+        
         await saveCampaign({
             id: uuid.v4(),
             campaignURL: destinationURL,
             end: endDate.toISOString(),
             start: startDate.toISOString(), 
-            imgURL: uploadedImgURL,
+            imgURL: "https://cdn.24h.com.vn/upload/4-2018/images/2018-11-16/1542366931-31-lam-gi-de-mua-duoc-gia-hoi-ngay-black-friday-black-friday-gaming-pc-1541290602-width660height399.jpg",
             title: campaignName,
-            brand
+            brand,
+            products:productCampaigns
         })
+        this.showDialog()
+        // this.props.navigation.navigate("ListCampaign");
     }
 
+   
     isFormValid = (): boolean => {
         const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
-        return typeof endDate === 'object' && typeof startDate === 'object' && campaignName && coverImage && brand && !!destinationURL 
+        return typeof endDate === 'object' && typeof startDate === 'object' && campaignName  && brand && !!destinationURL 
     }
     
     showDateTimePicker = (datePicker: 'start' | 'end') => {
