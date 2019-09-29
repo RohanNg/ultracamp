@@ -76,10 +76,11 @@ LinksStack.path = '/merchant-launch-discount';
 
 const LaunchCampStack = createStackNavigator(
   {
-    Links: LaunchCampaign,
+    LaunchCampaign: LaunchCampaign,
   },
   config
 );
+
 LaunchCampStack.navigationOptions = {
   tabBarLabel: 'MCampaign',
   tabBarIcon: ({ focused }) => (
@@ -90,7 +91,7 @@ LaunchCampStack.path = '/merchant-launch-campaign';
 
 const ListCampStack = createStackNavigator(
   {
-    Links: ListCampaignScreen,
+    ListCampaign: ListCampaignScreen,
   },
   config
 );
