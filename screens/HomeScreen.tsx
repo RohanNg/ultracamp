@@ -2,17 +2,14 @@ import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { Image, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { ProductComponent } from "../components/Product";
-import {
-  ProductItemData,
-  getDiscountedProducts,
-  getProducts
-} from "../repositories";
+import {ProductItemData,getDiscountedProducts,getProducts,getCampaigns} from "../repositories";
 import { Product } from "../types/product";
 import { Button } from "react-native-elements";
 import { ProductMerchantComponent } from "../components/ProductMerchant";
 import { Button as PaperButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Item } from "react-native-paper/typings/components/Drawer";
+
 
 interface HomeScreenProps {
   navigation: any;
@@ -33,11 +30,12 @@ export default class HomeScreen extends React.Component<
     this.genererateProductsView = this.genererateProductsView.bind(this);
     this.selectProduct = this.selectProduct.bind(this);
     this.submitProducts = this.submitProducts.bind(this);
+    this.launchCampaign = this.launchCampaign.bind(this);
   }
 
   async componentDidMount() {
     const products = await getProducts();
-    console.log(products);
+    
 
     this.setState({
       products: products.map((productItemData: ProductItemData) => {
@@ -68,6 +66,18 @@ export default class HomeScreen extends React.Component<
     this.props.navigation.navigate("Links", {
       products: JSON.stringify(selectedProducts)
     });
+  }
+
+  launchCampaign(){
+
+    const selectedProducts = this.state.products
+      .filter((item: any) => item.selected)
+      .map((item: any) => item.product);
+
+      this.props.navigation.navigate("LaunchCampaign", {
+        products: JSON.stringify(selectedProducts)
+      });
+
   }
   genererateProductsView() {
     const products = this.state.products;
@@ -129,8 +139,21 @@ export default class HomeScreen extends React.Component<
             this.state.products.filter((item: any) => item.selected).length <= 0
           }
         >
-          Launch
+          Add discount
         </PaperButton>
+
+        <PaperButton
+        icon={this.getIcon("rocket")}
+        mode="contained"
+        style={styles.lastSection}
+        color="red"
+        onPress={this.launchCampaign}
+        disabled={
+          this.state.products.filter((item: any) => item.selected).length <= 0
+        }
+      >
+        Launch campaign
+      </PaperButton>
       </View>
     );
   }
