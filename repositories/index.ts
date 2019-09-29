@@ -29,6 +29,7 @@ export interface CampaignData {
   end: string;
   imgURL: string;
   brand: string;
+  products: ProductItemData[]
 }
 
 const PRODUCT_COLLECTION = db.collection("product");
