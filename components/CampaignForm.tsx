@@ -125,9 +125,9 @@ export class CampaignForm extends React.Component<any, State> {
     hideDialog = () => this.setState({ dialogVisible: false });
 
     createCampaign = async () => {
-        this.showDialog()
         const { endDate, startDate, campaignName, coverImage, destinationURL, brand } = this.state;
         const uploadedImgURL = await uploadImage(coverImage)
+        const productCampaigns = this.props.campaignProducts || [];
 
         await saveCampaign({
             id: uuid.v4(),
@@ -136,8 +136,10 @@ export class CampaignForm extends React.Component<any, State> {
             start: startDate.toISOString(), 
             imgURL: uploadedImgURL,
             title: campaignName,
-            brand
+            brand,
+            products:productCampaigns
         })
+        this.showDialog()
     }
 
     isFormValid = (): boolean => {
