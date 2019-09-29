@@ -2,14 +2,19 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { CampaignForm } from '../components/CampaignForm';
 
-export function LaunchCampaign() {
+export function LaunchCampaign(props: any) {
+  const campaignProducts = props.navigation.getParam("products")
+    ? JSON.parse(props.navigation.getParam("products"))
+    : [];
+
+
   return (
     <ScrollView style={styles.container}>
       {/**
        * Go ahead and delete ExpoLinksView and replace it with your content;
        * we just wanted to provide you with some helpful links.
        */}
-      <CampaignForm />
+      <CampaignForm campaignProducts = {campaignProducts}/>
     </ScrollView>
   );
 }
